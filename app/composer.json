@@ -1,0 +1,17 @@
+{
+    "name": "omr/model",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marcin Scimborski"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "."
+        }
+    }
+}
