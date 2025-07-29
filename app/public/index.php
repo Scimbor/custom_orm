@@ -5,7 +5,6 @@ require_once __DIR__ . '/../helpers/helpers.php';
 
 use App\Models\Customer;
 
-$customer = new Customer();
 
 // echo 'Witam ! </br></br>';
 // echo 'Dane konfiguracyjne bazy danych </br></br>';
@@ -17,5 +16,7 @@ $customer = new Customer();
 // dump($customer->getTableName());
 
 // echo 'Dane Tabeli</br></br>';
+$customer = new Customer();
 
-dump($customer->all());
+dump($customer->where('address_id', '=', 6)->all());
+dump($customer->where('address_id', '=', 44)->where('store_id', '=', 2)->all());

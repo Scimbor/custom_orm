@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\src\core\DatabaseModel;
+use App\src\core\Model;
 
-class Customer extends DatabaseModel {
-    protected $connection = 'sqlite';
+class Customer extends Model {
+    protected $connection = 'mysql';
     protected $table = 'customer';
 }

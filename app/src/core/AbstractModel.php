@@ -6,15 +6,18 @@ use Exception;
 use PDOException;
 use App\src\core\PdoConnectionFactory;
 
-abstract class DatabaseModel{
+abstract class AbstractModel
+{
     protected $connection;
     protected $config;
     protected $table = null;
     protected $pdo;
 
+    protected $wheres = [];
+    protected $bindings = [];
+
     public function __construct()
     {
-          // Sprawdź, czy klasa potomna ma ustawioną właściwość $connection
         if (!isset($this->connection)) {
             $this->connection = env('DATABASE_DEFAULT_CONNECTION');
         }
@@ -23,8 +26,6 @@ abstract class DatabaseModel{
             throw new \Exception('Model ' . get_class($this) . ' have to define $table');
         }
 
-        $this->table = $this->table;
-        
         $allConfigs = DatabaseConfig::getConfig();
         $this->config = $allConfigs[$this->connection];
 
@@ -35,30 +36,37 @@ abstract class DatabaseModel{
     {
         try {
             $factory = PdoConnectionFactory::make($config['driver']);
+
             return $factory->create($config);
         } catch (PDOException $e) {
-            die('Błąd połączenia z bazą: ' . $e->getMessage());
+            throw new Exception('Błąd połączenia z bazą: ' . $e->getMessage());
         }
     }
 
-    public function all()
+    protected function query(string $sql)
     {
-        $stmt = $this->pdo->query("SELECT * FROM {$this->table}");
-        return $stmt->fetchAll();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($this->bindings);
+
+        $this->wheres = [];
+        $this->bindings = [];
+
+        return $stmt;
     }
 
-    public function getConfig()
+    protected function buildWhereClause(): string
     {
-        return $this->config;
-    }
+        if (empty($this->wheres)) {
+            return '';
+        }
 
-    public function getConnectionName()
-    {
-        return $this->connection;
-    }
+        $conditions = [];
 
-    public function getTableName()
-    {
-        return $this->table;
+        foreach ($this->wheres as $index => $where) {
+            $prefix = $index === 0 ? '' : $where['boolean'] . ' ';
+            $conditions[] = $prefix . "{$where['column']} {$where['operator']} ?";
+        }
+
+        return ' WHERE ' . implode(' ', $conditions);
     }
 }

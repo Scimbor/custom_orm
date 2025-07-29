@@ -14,7 +14,7 @@ class PdoConnectionFactory {
             'mysql' => new MysqlConnectionFactory(),
             'sqlite' => new SqliteConnectionFactory(),
             'pgsql' => new PgsqlConnectionFactory(),
-            // Dodaj kolejne fabryki
+
             default => throw new Exception("Nieobsługiwany sterownik: $driver"),
         };
     }
