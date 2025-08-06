@@ -6,17 +6,18 @@ require_once __DIR__ . '/../helpers/helpers.php';
 use App\Models\Customer;
 
 
-// echo 'Witam ! </br></br>';
-// echo 'Dane konfiguracyjne bazy danych </br></br>';
+// echo 'Hello ! </br></br>';
+// echo 'Database configuration </br></br>';
 
 // dump($customer->getConfig());
 
-// echo 'Nazwa Tabeli</br></br>';
+// echo 'Table name</br></br>';
 
 // dump($customer->getTableName());
 
-// echo 'Dane Tabeli</br></br>';
-$customer = new Customer();
+// echo 'Table data</br></br>';
+dump(Customer::get());
+dump(Customer::where('address_id', '=', 6)->all());
 
-dump($customer->where('address_id', '=', 6)->all());
-dump($customer->where('address_id', '=', 44)->where('store_id', '=', 2)->all());
+// // Usage pagination and where and select
+// dump($customer->select('customer_id, first_name, last_name')->where('store_id', '=', 2)->paginate(1, 2));

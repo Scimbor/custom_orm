@@ -5,6 +5,6 @@ namespace App\Models;
 use App\src\core\Model;
 
 class Customer extends Model {
-    protected $connection = 'mysql';
-    protected $table = 'customer';
+    protected string $connection = 'mysql';
+    protected string $table = 'customer';
 }
